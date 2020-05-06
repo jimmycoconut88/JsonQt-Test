@@ -16,6 +16,11 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+
+
+
+
+
     jsonable test;
 
     QFile loadFile(QStringLiteral("menu.json"));
@@ -55,6 +60,10 @@ int main(int argc, char *argv[])
     test.write(gameObject);
     QJsonDocument saveDoc(gameObject);
     saveFile.write(saveDoc.toJson());
+    saveFile.close();
+
+
+
 
     return app.exec();
 }
