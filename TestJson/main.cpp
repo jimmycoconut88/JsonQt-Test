@@ -16,35 +16,42 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
-
+    jsonable test;
 
     QFile loadFile(QStringLiteral("menu.json"));
-
-    jsonable test;
-    if (!loadFile.open(QIODevice::ReadOnly)) {
+   if (!loadFile.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open save file.");
         return false;
     }
-
     QByteArray saveData = loadFile.readAll();
-
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
-
     test.read(loadDoc.object());
+    loadFile.close();
+
+
+
+
 
 //    for(int i=0;i<10;i++){
-//        test.name="Chicken wings";
-//        test.price= 100.1;
-//        test.description="Hello";
-//        test.category="main dish";
+        test.name="Buffalo wings";
+        test.price= 200;
+        test.description="Not Hello";
+        test.category="SIDE dish";
 //       for(int j=0;j<3;j++){
 //            test.quantity.push_back(j*i);
 //        }
-//        menu.push_back(test);
+        menu.push_back(test);
 //    }
 
-    QFile saveFile(QStringLiteral("menu2.json"));
+
+
+
+    QFile saveFile(QStringLiteral("menu.json"));
     QJsonObject gameObject;
+    if (!saveFile.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open save file.");
+        return false;
+    }
     test.write(gameObject);
     QJsonDocument saveDoc(gameObject);
     saveFile.write(saveDoc.toJson());
