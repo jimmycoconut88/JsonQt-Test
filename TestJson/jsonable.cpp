@@ -26,21 +26,25 @@ void jsonable::read(const QJsonObject &json){
             menu.reserve(menuArr.size());
         for(int i = 0; i < menuArr.size(); ++i){
             jsonable temp;
-            if (json.contains("name") && json["name"].isString())
-                temp.name = json["name"].toString();
-            if (json.contains("description") && json["description"].isString())
-                temp.description = json["description"].toString();
-            if (json.contains("category") && json["category"].isString())
-                temp.category = json["category"].toString();
-            if (json.contains("price") && json["price"].isDouble())
-                temp.price = json["price"].toDouble();
-            if (json.contains("quantity") && json["quantity"].isArray()) {
-                QJsonArray Jquantity = json["quantity"].toArray();
-                quantity.clear();
-                quantity.reserve(Jquantity.size());
-                for (int i = 0; i < Jquantity.size(); ++i) {
-                    int quanObject = Jquantity[i].toInt();
-                    quantity.push_back(quanObject);
+               QJsonObject obj = menuArr[i].toObject();
+            if (obj.contains("name") && obj["name"].isString())
+                temp.name = obj["name"].toString();
+            if (obj.contains("description") && obj["description"].isString())
+                temp.description = obj["description"].toString();
+            if (obj.contains("category") && obj["category"].isString())
+                temp.category = obj["category"].toString();
+            if (obj.contains("price") && obj["price"].isDouble())
+                temp.price = obj["price"].toDouble();
+
+
+            if (obj.contains("quantity") && obj["quantity"].isArray()) {
+                QJsonArray Jquantity = obj["quantity"].toArray();
+                temp.quantity.clear();
+                temp.quantity.reserve(Jquantity.size());
+                for (int j = 0; j < Jquantity.size(); ++j) {
+                    QJsonObject q = Jquantity[j].toObject();
+                    int quanObject = q["quantity"].toInt();
+                    temp.quantity.push_back(quanObject);
                 }
             }
             menu.push_back(temp);
@@ -57,7 +61,7 @@ void jsonable::write(QJsonObject &json) const {
         temp["category"] = items.category;
         temp["price"] = items.price;
         QJsonArray quanArr;
-        for(const int &iter : quantity){
+        for(const int &iter : items.quantity){
             QJsonObject qtemp;
             qtemp["quantity"] = iter;
             quanArr.append(qtemp);
